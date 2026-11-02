@@ -1,0 +1,194 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+    /* Light Theme Tokens */
+    --bg-main: #F8F8FC;
+    --bg-surface: #FFFFFF;
+    --bg-surface-elevated: #F1F1F8;
+    --bg-sidebar: #FFFFFF;
+    --bg-card: #FFFFFF;
+    --bg-card-hover: #F4F4FA;
+    --text-primary: #171725;
+    --text-secondary: #5F5F73;
+    --text-muted: #77778C;
+    --text-subtle: #9898AA;
+    --border-subtle: #EAEAF2;
+    --border-strong: #D5D5E2;
+    --shadow-glass: 0 10px 30px -10px rgba(23, 23, 37, 0.08);
+    --shadow-card: 0 4px 20px -2px rgba(23, 23, 37, 0.06);
+
+    --sat: env(safe-area-inset-top, 0px);
+    --sab: env(safe-area-inset-bottom, 0px);
+    --sal: env(safe-area-inset-left, 0px);
+    --sar: env(safe-area-inset-right, 0px);
+  }
+
+  .dark {
+    color-scheme: dark;
+    /* Dark Theme Tokens (Deep Ink, Midnight, Dark Surface) */
+    --bg-main: #101018;        /* Deep Ink */
+    --bg-surface: #151522;     /* Midnight */
+    --bg-surface-elevated: #1C1C2A; /* Dark Surface */
+    --bg-sidebar: #151522;
+    --bg-card: #1C1C2A;
+    --bg-card-hover: #232334;
+    --text-primary: #FFFFFF;
+    --text-secondary: #A0A0B8;
+    --text-muted: #8E8EA6;
+    --text-subtle: #63637C;
+    --border-subtle: rgba(255, 255, 255, 0.08);
+    --border-strong: rgba(255, 255, 255, 0.16);
+    --shadow-glass: 0 16px 40px -10px rgba(0, 0, 0, 0.6);
+    --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.35);
+  }
+
+  html {
+    width: 100%;
+    max-width: 100%;
+    min-height: 100%;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    width: 100%;
+    max-width: 100%;
+    min-height: 100%;
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  #root {
+    width: 100%;
+    max-width: 100%;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Universal box sizing and text wrapping */
+  *, ::before, ::after {
+    box-sizing: border-box;
+  }
+
+  /* Custom scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(139, 92, 246, 0.2);
+    border-radius: 9999px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(139, 92, 246, 0.4);
+  }
+}
+
+@layer components {
+  /* Dynamic adaptive glassmorphism card */
+  .glass-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    box-shadow: var(--shadow-card);
+  }
+
+  .glass-sidebar {
+    background-color: var(--bg-sidebar);
+    border-right: 1px solid var(--border-subtle);
+  }
+
+  .glass-header {
+    background-color: var(--bg-surface);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  /* Responsive data table container */
+  .table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 0.75rem;
+  }
+
+  /* Safe area utility helpers for modern mobile viewports (iOS notch, bottom bar) */
+  .pt-safe {
+    padding-top: var(--sat);
+  }
+
+  .pb-safe {
+    padding-bottom: var(--sab);
+  }
+
+  .pl-safe {
+    padding-left: var(--sal);
+  }
+
+  .pr-safe {
+    padding-right: var(--sar);
+  }
+
+  /* Premium chat message gutter for symmetrical, responsive margins */
+  .chat-message-gutter {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  @media (min-width: 375px) {
+    .chat-message-gutter {
+      padding-left: 14px;
+      padding-right: 14px;
+    }
+  }
+  @media (min-width: 431px) {
+    .chat-message-gutter {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+  }
+  @media (min-width: 768px) {
+    .chat-message-gutter {
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+  }
+}
+
+@keyframes slideRight {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideLeft {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.animate-slideRight {
+  animation: slideRight 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-slideLeft {
+  animation: slideLeft 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}

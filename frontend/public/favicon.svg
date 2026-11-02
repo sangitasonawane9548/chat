@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+  <defs>
+    <linearGradient id="melt_grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8067F7" />
+      <stop offset="50%" stop-color="#9D7BFC" />
+      <stop offset="100%" stop-color="#35D6B5" />
+    </linearGradient>
+  </defs>
+  <rect width="48" height="48" rx="14" fill="#0B0D12" />
+  <rect x="1" y="1" width="46" height="46" rx="13" stroke="url(#melt_grad)" stroke-width="1.5" stroke-opacity="0.4" />
+  
+  <!-- MELT Molten Fluid Dialogue Droplet -->
+  <path
+    d="M24 10C16.268 10 10 16.268 10 24C10 27.878 11.583 31.385 14.148 33.916C14.453 34.217 14.629 34.628 14.629 35.059V37.5C14.629 38.328 15.301 39 16.129 39H18.57C19.001 39 19.412 38.824 19.714 38.519C20.976 37.241 22.35 36.15 24 36.15C31.732 36.15 38 29.882 38 22.15C38 15.409 31.732 10 24 10Z"
+    fill="url(#melt_grad)"
+  />
+  <path
+    d="M19 23C19 21.067 20.567 19.5 22.5 19.5C24.433 19.5 26 21.067 26 23C26 26 20 27 20 29.5H25.5"
+    stroke="#0B0D12"
+    stroke-width="2.5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <circle cx="28.5" cy="19.5" r="2" fill="#FFFFFF" />
+</svg>

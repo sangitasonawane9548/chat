@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+*/node_modules/
+**/node_modules/
+
+# Environment configurations & secrets
+.env
+.env.local
+.env.*.local
+*.env
+backend/.env
+!*.env.example
+
+# Production builds
+dist/
+build/
+*/dist/
+
+# Uploads
+backend/uploads/*
+!backend/uploads/**/.gitkeep
+!backend/uploads/.gitkeep
+
+# System & IDE files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
