@@ -15,6 +15,7 @@ import ProtectedRoute, {
 import AppLayout from '@/components/layout/AppLayout';
 import ToastProvider from '@/components/common/ToastProvider';
 import ErrorBoundary from '@/components/common/ErrorBoundary';
+import AdminAccessDenied from '@/pages/admin/AdminAccessDenied';
 
 
 // Lazy-loaded route components for optimal initial bundle & performance
@@ -36,7 +37,6 @@ const ResetPassword = lazy(() => import('@/pages/auth/ResetPassword'));
 // Lazy-loaded Admin components
 const AdminLayout = lazy(() => import('@/components/admin/AdminLayout'));
 const AdminLogin = lazy(() => import('@/pages/admin/AdminLogin'));
-const AdminAccessDenied = lazy(() => import('@/pages/admin/AdminAccessDenied'));
 const AdminDashboard = lazy(() => import('@/pages/admin/AdminDashboard'));
 const AdminUsers = lazy(() => import('@/pages/admin/AdminUsers'));
 const AdminGroups = lazy(() => import('@/pages/admin/AdminGroups'));
