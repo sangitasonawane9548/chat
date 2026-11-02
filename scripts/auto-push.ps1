@@ -22,3 +22,4 @@ if ($LASTEXITCODE -eq 0) {
 } else {
   Write-Host "⚠️ Git push encountered an error." -ForegroundColor Red
 }
+
