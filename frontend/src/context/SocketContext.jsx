@@ -3,7 +3,7 @@ import { io } from 'socket.io-client';
 import { useAuth } from './AuthContext';
 import { notify } from '@/components/common/ToastProvider';
 import { getIncomingChatRequests, getNotifications } from '@/services/api';
-import { getApiBaseUrl } from '@/utils/apiUrl';
+import { getApiBaseUrl, getSocketBaseUrl } from '@/utils/apiUrl';
 
 const SocketContext = createContext(null);
 
@@ -45,7 +45,7 @@ export const SocketProvider = ({ children }) => {
 
     loadCounts();
 
-    const socketUrl = getApiBaseUrl();
+    const socketUrl = getSocketBaseUrl();
     const token = localStorage.getItem('melt_token') || localStorage.getItem('admin_token');
     const s = io(socketUrl, {
       withCredentials: true,

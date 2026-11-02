@@ -34,29 +34,55 @@ const isUserOnline = (userId) => {
 };
 
 /**
+ * Resolve allowed origins from environment configuration
+ */
+const getConfiguredOrigins = () => {
+  const envOrigins = (process.env.FRONTEND_URL || '')
+    .split(',')
+    .map(url => url.trim().replace(/\/$/, ''))
+    .filter(Boolean);
+
+  return [
+    ...envOrigins,
+    'http://localhost:5173',
+    'http://localhost:3000',
+    'http://127.0.0.1:5173',
+    'http://localhost:5174'
+  ];
+};
+
+const isAllowedOrigin = (origin) => {
+  if (!origin) return true;
+  if (process.env.NODE_ENV !== 'production') return true;
+
+  const origins = getConfiguredOrigins();
+  if (origins.includes(origin)) return true;
+
+  // Match Vercel production and preview deployments (*.vercel.app)
+  if (/^https:\/\/([a-zA-Z0-9-]+\.)*vercel\.app$/.test(origin)) return true;
+
+  // Match localhost & loopback IP addresses (http or https)
+  if (/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) return true;
+
+  // Match LAN private network IP addresses
+  const lanPattern = /^https?:\/\/(192\.168\.\d{1,3}\.\d{1,3}|10\.\d{1,3}\.\d{1,3}|172\.(1[6-9]|2\d|3[0-1])\.\d{1,3}\.\d{1,3})(:\d+)?$/;
+  if (lanPattern.test(origin)) return true;
+
+  // Match Cloudflare tunnels
+  if (/^https?:\/\/([a-zA-Z0-9-]+\.)*(trycloudflare\.com|cloudflare\.com)(:\d+)?$/.test(origin)) return true;
+
+  // Match common developer tunnels
+  if (/^https?:\/\/([a-zA-Z0-9-]+\.)*(loca\.lt|ngrok-free\.app|ngrok\.io|ngrok\.app)(:\d+)?$/.test(origin)) return true;
+
+  return false;
+};
+
+/**
  * Initialize Socket.IO instance attached to the HTTP server
  * @param {import('http').Server} server 
  * @returns {import('socket.io').Server}
  */
 const initSocket = (server) => {
-  const allowedOrigins = [
-    process.env.FRONTEND_URL || 'http://localhost:5173',
-    'http://localhost:3000',
-    'http://127.0.0.1:5173',
-    'http://localhost:5174'
-  ];
-
-  const isAllowedOrigin = (origin) => {
-    if (!origin) return true;
-    if (process.env.NODE_ENV !== 'production') return true;
-    if (allowedOrigins.includes(origin)) return true;
-    if (/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) return true;
-    const lanPattern = /^https?:\/\/(192\.168\.\d{1,3}\.\d{1,3}|10\.\d{1,3}\.\d{1,3}|172\.(1[6-9]|2\d|3[0-1])\.\d{1,3}\.\d{1,3})(:\d+)?$/;
-    if (lanPattern.test(origin)) return true;
-    const tunnelPattern = /^https?:\/\/([a-zA-Z0-9-]+\.)*(trycloudflare\.com|cloudflare\.com|loca\.lt|ngrok-free\.app|ngrok\.io|ngrok\.app)(:\d+)?$/;
-    if (tunnelPattern.test(origin)) return true;
-    return false;
-  };
 
   io = new Server(server, {
     cors: {

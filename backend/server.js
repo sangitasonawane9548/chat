@@ -9,7 +9,8 @@ const { testDatabaseConnection, pool } = require('./config/database');
 const { initSocket } = require('./config/socket');
 const statusService = require('./services/statusService');
 
-const PORT = process.env.PORT || 5000;
+const PORT = parseInt(process.env.PORT || '5000', 10);
+const HOST = process.env.HOST || '0.0.0.0';
 
 // Create HTTP server
 const server = http.createServer(app);
@@ -21,7 +22,7 @@ const io = initSocket(server);
 const startServer = async () => {
   try {
     console.log('----------------------------------------------------');
-    console.log('🚀 Booting Username Chat Platform Backend Server...');
+    console.log('🚀 Booting MELT Real-Time Backend Server...');
     console.log('----------------------------------------------------');
 
     // Test MySQL Database connection
@@ -35,10 +36,10 @@ const startServer = async () => {
       console.warn('   The server will start, but database requests will fail until MySQL is accessible.');
     }
 
-    server.listen(PORT, () => {
-      console.log(`📡 HTTP Server running on http://localhost:${PORT}`);
+    server.listen(PORT, HOST, () => {
+      console.log(`📡 HTTP Server running on http://${HOST}:${PORT}`);
       console.log(`⚡ Socket.IO initialized and ready`);
-      console.log(`🔍 Health check available at: http://localhost:${PORT}/api/health`);
+      console.log(`🔍 Health check available at: http://${HOST}:${PORT}/health`);
       console.log('----------------------------------------------------');
 
       // Run status cleanup immediately on start, then every 30 minutes
@@ -57,19 +58,38 @@ const startServer = async () => {
   }
 };
 
-// Handle process termination gracefully
+// Handle process termination gracefully (Render SIGTERM & SIGINT)
 const shutdown = async () => {
   console.log('\n🛑 Gracefully shutting down server...');
-  server.close(async () => {
-    console.log('   HTTP server closed.');
-    try {
-      await pool.end();
-      console.log('   MySQL connection pool closed.');
-    } catch (err) {
-      console.error('   Error closing MySQL pool:', err);
+
+  // Force exit after 5 seconds if graceful close hangs
+  const forceExit = setTimeout(() => {
+    console.error('⚠️ Shutdown timed out, forcing exit.');
+    process.exit(1);
+  }, 5000);
+
+  try {
+    if (io) {
+      io.close(() => {
+        console.log('   Socket.IO server closed.');
+      });
     }
-    process.exit(0);
-  });
+
+    server.close(async () => {
+      console.log('   HTTP server closed.');
+      try {
+        await pool.end();
+        console.log('   MySQL connection pool closed.');
+      } catch (err) {
+        console.error('   Error closing MySQL pool:', err.message);
+      }
+      clearTimeout(forceExit);
+      process.exit(0);
+    });
+  } catch (e) {
+    clearTimeout(forceExit);
+    process.exit(1);
+  }
 };
 
 process.on('SIGINT', shutdown);

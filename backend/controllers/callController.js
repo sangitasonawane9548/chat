@@ -506,6 +506,45 @@ const getActiveCall = async (req, res, next) => {
   }
 };
 
+/**
+ * 8. Get ICE / TURN Server Configuration
+ * GET /api/calls/ice-servers
+ * Supplies verified STUN and TURN server credentials from environment
+ */
+const getIceServersConfig = async (req, res, next) => {
+  try {
+    const servers = [
+      { urls: 'stun:stun.l.google.com:19302' },
+      { urls: 'stun:stun1.l.google.com:19302' },
+      { urls: 'stun:stun2.l.google.com:19302' },
+      { urls: 'stun:stun3.l.google.com:19302' }
+    ];
+
+    if (process.env.STUN_URLS) {
+      const customStun = process.env.STUN_URLS.split(',')
+        .map(u => u.trim())
+        .filter(Boolean)
+        .map(urls => ({ urls }));
+      servers.push(...customStun);
+    }
+
+    if (process.env.TURN_URL) {
+      servers.push({
+        urls: process.env.TURN_URL,
+        username: process.env.TURN_USERNAME || '',
+        credential: process.env.TURN_CREDENTIAL || ''
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      iceServers: servers
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   initiateCall,
   getCallHistory,
@@ -513,6 +552,7 @@ module.exports = {
   cancelCall,
   rejectCall,
   endCall,
-  getActiveCall
+  getActiveCall,
+  getIceServersConfig
 };
 

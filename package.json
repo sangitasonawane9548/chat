@@ -6,6 +6,7 @@
     "dev:backend": "npm --prefix backend run dev",
     "dev:frontend": "npm --prefix frontend run dev",
     "build:frontend": "npm --prefix frontend run build",
+    "db:migrate": "node backend/scripts/migrate_production.js",
     "push": "git add -A && git commit -m \"chore: sync MELT updates\" && git push origin main",
     "autopush": "powershell -ExecutionPolicy Bypass -File scripts/auto-push.ps1"
   },

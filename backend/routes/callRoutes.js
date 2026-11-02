@@ -6,7 +6,8 @@ const {
   cancelCall,
   rejectCall,
   endCall,
-  getActiveCall
+  getActiveCall,
+  getIceServersConfig
 } = require('../controllers/callController');
 const { requireAuth } = require('../middleware/authMiddleware');
 
@@ -18,6 +19,7 @@ router.use(requireAuth);
 router.post('/', initiateCall);
 router.get('/', getCallHistory);
 router.get('/active', getActiveCall);
+router.get('/ice-servers', getIceServersConfig);
 router.get('/:callId', getCallById);
 router.post('/:callId/cancel', cancelCall);
 router.post('/:callId/reject', rejectCall);
