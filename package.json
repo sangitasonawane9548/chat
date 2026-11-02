@@ -1,0 +1,21 @@
+{
+  "name": "melt-chat-platform",
+  "version": "1.0.0",
+  "description": "MELT Real-Time Chat & Video Calling Platform",
+  "scripts": {
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "build:frontend": "npm --prefix frontend run build",
+    "push": "git add -A && git commit -m \"chore: sync MELT updates\" && git push origin main",
+    "autopush": "powershell -ExecutionPolicy Bypass -File scripts/auto-push.ps1"
+  },
+  "keywords": [
+    "chat",
+    "webrtc",
+    "video-call",
+    "react",
+    "nodejs"
+  ],
+  "author": "sangitasonawane9548",
+  "license": "ISC"
+}
